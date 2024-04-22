@@ -10,6 +10,12 @@ if (!questionsName) {
 
 const questionsPath = path.resolve('questions', questionsName)
 
+fs.pathExists(questionsPath).then(isExists => {
+    if (isExists) {
+        throw new Error('problem already exists')
+    }
+})
+
 fs.ensureDir(questionsPath).then(() => {
     fs.ensureFile(path.resolve(questionsPath, 'template.ts'))
     fs.ensureFile(path.resolve(questionsPath, 'test-cases.ts'))

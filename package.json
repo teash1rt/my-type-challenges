@@ -1,13 +1,10 @@
 {
   "name": "my-type-challenges",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "new": "esno ./scripts/new.ts"
   },
-  "keywords": [],
-  "author": "",
+  "author": "TeaShirt",
   "license": "ISC",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4"
