@@ -1,19 +1,19 @@
 {
-    "name": "my-type-challenges",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "new": "ts-node ./scripts/new.ts"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-        "@type-challenges/utils": "^0.1.1",
-        "@types/fs-extra": "^11.0.4"
-    },
-    "dependencies": {
-        "fs-extra": "^11.2.0"
-    }
+  "name": "my-type-challenges",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "new": "esno ./scripts/new.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4"
+  },
+  "dependencies": {
+    "esno": "^4.7.0",
+    "fs-extra": "^11.2.0"
+  }
 }
