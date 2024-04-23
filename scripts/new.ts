@@ -2,21 +2,21 @@ import fs from 'fs-extra'
 import path from 'node:path'
 import process from 'node:process'
 
-const questionsName: string | undefined = process.argv[2];
+const questionsName: string | undefined = process.argv[2]
 
 if (!questionsName) {
-    throw new Error('missing problem name')
+  throw new Error('missing problem name')
 }
 
 const questionsPath = path.resolve('questions', questionsName)
 
-fs.pathExists(questionsPath).then(isExists => {
-    if (isExists) {
-        throw new Error('problem already exists')
-    }
+fs.pathExists(questionsPath).then((isExists) => {
+  if (isExists) {
+    throw new Error('problem already exists')
+  }
 })
 
 fs.ensureDir(questionsPath).then(() => {
-    fs.ensureFile(path.resolve(questionsPath, 'template.ts'))
-    fs.ensureFile(path.resolve(questionsPath, 'test-cases.ts'))
+  fs.ensureFile(path.resolve(questionsPath, 'template.ts'))
+  fs.ensureFile(path.resolve(questionsPath, 'test-cases.ts'))
 })

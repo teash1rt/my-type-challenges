@@ -2,12 +2,14 @@
   "name": "my-type-challenges",
   "version": "1.0.0",
   "scripts": {
-    "new": "esno ./scripts/new.ts"
+    "new": "esno ./scripts/new.ts",
+    "format": "prettier --write  \"questions/**/*.ts\""
   },
   "author": "TeaShirt",
   "license": "ISC",
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4"
+    "@types/fs-extra": "^11.0.4",
+    "prettier": "^3.2.5"
   },
   "dependencies": {
     "esno": "^4.7.0",
