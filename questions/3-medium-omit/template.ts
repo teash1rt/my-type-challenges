@@ -1,5 +1,5 @@
 type MyOmit<T, K extends keyof T> = {
-    [P in keyof T as P extends K ? never : P]: T[P]
+  [P in keyof T as P extends K ? never : P]: T[P]
 }
 
 // https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as

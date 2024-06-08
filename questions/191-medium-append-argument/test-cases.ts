@@ -7,8 +7,8 @@ type Case2 = AppendArgument<() => void, undefined>
 type Result2 = (x: undefined) => void
 
 type cases = [
-    Expect<Equal<Case1, Result1>>,
-    Expect<Equal<Case2, Result2>>,
-    // @ts-expect-error
-    AppendArgument<unknown, undefined>,
+  Expect<Equal<Case1, Result1>>,
+  Expect<Equal<Case2, Result2>>,
+  // @ts-expect-error
+  AppendArgument<unknown, undefined>,
 ]
