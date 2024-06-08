@@ -3,16 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "new": "esno ./scripts/new.ts",
+    "gp": "esno ./scripts/git.ts",
     "format": "prettier --write  \"questions/**/*.ts\""
   },
   "author": "TeaShirt",
   "license": "ISC",
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
     "prettier": "^3.2.5"
   },
   "dependencies": {
-    "esno": "^4.7.0",
-    "fs-extra": "^11.2.0"
+    "esno": "^4.7.0"
   }
 }

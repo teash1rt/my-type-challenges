@@ -1,0 +1,15 @@
+{
+  "name": "@my-type-challenges/scripts",
+  "version": "1.0.0",
+  "scripts": {},
+  "author": "TeaShirt",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4"
+  },
+  "dependencies": {
+    "execa": "^9.2.0",
+    "fs-extra": "^11.2.0",
+    "simple-git": "^3.24.0"
+  }
+}
