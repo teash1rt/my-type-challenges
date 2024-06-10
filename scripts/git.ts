@@ -1,7 +1,13 @@
 import simpleGit from 'simple-git'
-import { Flow } from './flow'
+import { Flow, type Task } from './flow'
 
 const git = simpleGit()
+
+const commitMsg: string | undefined = process.argv.slice(2).join(' ')
+
+if (!commitMsg) {
+  throw new Error('missing commit message')
+}
 
 const flow = new Flow([
   {
@@ -11,14 +17,19 @@ const flow = new Flow([
   },
   {
     name: 'git commit',
-    command: () => git.commit('feat: init simple-git'),
+    command: () => git.commit(commitMsg),
     okMsg: 'Commit Finish',
   },
   {
-    name: 'git push',
-    command: () => git.push('origin', 'feat/git-cd'),
-    okMsg: 'Push Finish',
+    name: 'get head',
+    command: () => git.revparse(['--abbrev-ref', 'HEAD']),
+    okMsg: 'Get Head Finish',
   },
+  {
+    name: 'git push',
+    command: (branch) => git.push('origin', branch),
+    okMsg: 'Push Finish',
+  } satisfies Task<string>,
 ])
 
 flow
@@ -29,21 +40,3 @@ flow
   .catch((err) => {
     console.error(err)
   })
-
-//git
-//  .add('./*')
-//  .then(() => {
-//    console.log('Files added!')
-//  })
-//  .then(() => {
-//    git
-//      .commit('feat: init simple-git')
-//      .then(() => {
-//        console.log('Committed!')
-//      })
-//      .then(() => {
-//        git.push('origin', 'feat/git-cd').then(() => {
-//          console.log('Pushed!')
-//        })
-//      })
-//  })

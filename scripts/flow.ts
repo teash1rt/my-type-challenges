@@ -1,6 +1,6 @@
-type Task<T = unknown, U = unknown> = {
+export type Task<T = any, U = any> = {
   name: string
-  command: (arg?: T) => Promise<U>
+  command: (arg: T) => Promise<U>
   okMsg: string
 }
 
