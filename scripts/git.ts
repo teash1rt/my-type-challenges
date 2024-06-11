@@ -9,7 +9,30 @@ if (!commitMsg) {
   throw new Error('missing commit message')
 }
 
+const COMMIT_PREFIX = ['feat', 'fix', 'refactor', 'chore', 'docs'] as const
+
+const commitCheck = () => {
+  if (
+    !COMMIT_PREFIX.some((item) => {
+      return commitMsg.startsWith(item + ':')
+    })
+  ) {
+    return Promise.reject('wrong commit prefix')
+  }
+
+  if (process.argv[3] === undefined) {
+    return Promise.reject('missing commit body')
+  }
+
+  return Promise.resolve()
+}
+
 const flow = new Flow([
+  {
+    name: 'commit check',
+    command: commitCheck,
+    okMsg: 'Check Finish',
+  },
   {
     name: 'git add',
     command: () => git.add('./*'),
