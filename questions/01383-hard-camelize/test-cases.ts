@@ -26,19 +26,23 @@ type cases = [
   Expect<
     Equal<
       Camelize<{
-        array: [
+        array_case: [
           string,
+          {
+            foo_bar: string
+            snake_case: [{ yet_another_prop: number }, boolean]
+          },
           number,
-          { snake_case: string },
-          { another_element: { yet_another_prop: string } },
         ]
       }>,
       {
-        array: [
+        arrayCase: [
           string,
+          {
+            fooBar: string
+            snakeCase: [{ yetAnotherProp: number }, boolean]
+          },
           number,
-          { snakeCase: string },
-          { anotherElement: { yetAnotherProp: string } },
         ]
       }
     >
