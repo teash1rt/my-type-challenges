@@ -4,7 +4,7 @@
   "scripts": {
     "new": "esno ./scripts/new.ts",
     "gp": "esno ./scripts/git.ts",
-    "format": "prettier --write  \"questions/**/*.ts\""
+    "format": "prettier --write  \"questions/**/*.ts\"  \"scripts/*.ts\""
   },
   "author": "TeaShirt",
   "license": "ISC",
