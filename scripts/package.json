@@ -5,11 +5,9 @@
   "author": "TeaShirt",
   "license": "ISC",
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4"
-  },
-  "dependencies": {
     "execa": "^9.2.0",
     "fs-extra": "^11.2.0",
-    "simple-git": "^3.24.0"
+    "simple-git": "^3.24.0",
+    "@types/fs-extra": "^11.0.4"
   }
 }

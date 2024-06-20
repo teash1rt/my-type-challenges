@@ -9,9 +9,7 @@
   "author": "TeaShirt",
   "license": "ISC",
   "devDependencies": {
+    "esno": "^4.7.0",
     "prettier": "^3.2.5"
-  },
-  "dependencies": {
-    "esno": "^4.7.0"
   }
 }
