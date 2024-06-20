@@ -38,8 +38,6 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
 
-  site: {}
-
 packages:
 
   '@esbuild/aix-ppc64@0.19.12':
