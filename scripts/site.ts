@@ -2,54 +2,87 @@ import { parse } from '@babel/parser'
 import fs from 'fs-extra'
 import path from 'node:path'
 import he from 'he'
-import { BUILD_PATH, QUESTIONS_PATH } from './path'
+import { BUILD_PATH, QUESTIONS_PATH, SCRIPTS_PATH } from './path'
+import { Flow } from './flow'
 
-const extract = (code: string) => {
-  const ast = parse(code, {
-    sourceType: 'module',
-    plugins: ['typescript'],
-  })
-  return ast.comments
+const getFiles = () => {
+  return fs.readdir(QUESTIONS_PATH)
 }
 
-const folder = fs.readdirSync(QUESTIONS_PATH)
-const comments: string[] = []
+const getComments = (files: string[]) => {
+  const questions = files.filter((question) => /^\d+-/.test(question))
+  const comments: string[] = []
 
-for (let i = 0; i < folder.length; i++) {
-  if (!/^\d+-/.test(folder[i])) {
-    continue
-  }
-  const buffer = fs.readFileSync(path.join(QUESTIONS_PATH, folder[i], 'template.ts'))
-  extract(buffer.toString('utf8'))?.map((v) => {
-    comments.push(he.encode(v.value))
-  })
+  return new Flow(
+    questions.map((question) => {
+      return {
+        name: `get comment from ${question}`,
+        command: () => {
+          const buffer = fs.readFileSync(path.join(QUESTIONS_PATH, question, 'template.ts'))
+          parse(buffer.toString('utf8'), {
+            sourceType: 'module',
+            plugins: ['typescript'],
+          }).comments?.map((v) => {
+            comments.push(he.encode(v.value))
+          })
+          return Promise.resolve(comments)
+        },
+      }
+    }),
+  ).run()
 }
 
-const SITE_TEMPLATE = `
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>site</title>
-  </head>
-  <body>
-    <div id="site">
-      {{content}}
-    </div>
-  </body>
-</html>
-`
+const generateSite = async (comments: string[]) => {
+  return new Flow([
+    {
+      name: 'ensure dir',
+      command: () => fs.ensureDir(BUILD_PATH),
+    },
+    {
+      name: 'read file',
+      command: () => fs.readFile(path.join(SCRIPTS_PATH, 'template.html')),
+    },
+    {
+      name: 'generate site',
+      command: (buffer: Buffer) =>
+        fs.writeFile(
+          path.join(BUILD_PATH, 'index.html'),
+          buffer.toString('utf8').replace(
+            /{{\w+}}/,
+            comments
+              .map((comment) => {
+                return `<p>${comment}</p>`
+              })
+              .join(''),
+          ),
+        ),
+    },
+  ]).run()
+}
 
-fs.ensureDirSync(BUILD_PATH)
-fs.writeFileSync(
-  path.join(BUILD_PATH, 'index.html'),
-  SITE_TEMPLATE.replace(
-    /{{\w+}}/,
-    comments
-      .map((comment) => {
-        return `<p>${comment}</p>`
-      })
-      .join(''),
-  ),
-)
+const siteFlow = new Flow([
+  {
+    name: 'get files',
+    command: getFiles,
+    okMsg: 'Get Questions Finish',
+  },
+  {
+    name: 'get comments',
+    command: (files: string[]) => getComments(files),
+    okMsg: 'Get Comments Finish',
+  },
+  {
+    name: 'generate site',
+    command: (comments: string[]) => generateSite(comments),
+    okMsg: 'Generate Site Finish',
+  },
+])
+
+siteFlow
+  .run()
+  .then(() => {
+    console.log('Site Flow Finish')
+  })
+  .catch((err) => {
+    console.error(err)
+  })

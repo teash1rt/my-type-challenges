@@ -1,5 +1,5 @@
 import simpleGit from 'simple-git'
-import { Flow, type Task } from './flow'
+import { Flow } from './flow'
 
 const git = simpleGit()
 
