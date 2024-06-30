@@ -7,5 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: node -v
-      - run: npm --version
+
+      - name: 安装依赖🛠️
+        run: |
+          npm i pnpm -g
+          pnpm install --no-frozen-lockfile
+
+      - name: 站点生成🚀
+        run: pnpm site
