@@ -16,8 +16,16 @@ jobs:
       - name: 站点生成🚀
         run: pnpm site
 
-      - name: 站点部署🌟
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: 资源加载🌟
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: gh-pages
-          folder: dist
+          path: './dist'
+
+      - name: 站点部署💡
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
