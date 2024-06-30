@@ -1,0 +1,11 @@
+name: 'site'
+
+on: push
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node -v
+      - run: npm --version
