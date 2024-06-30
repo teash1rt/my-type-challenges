@@ -2,6 +2,7 @@ import { parse } from '@babel/parser'
 import fs from 'fs-extra'
 import path from 'node:path'
 import he from 'he'
+import { BUILD_PATH, QUESTIONS_PATH } from './path'
 
 const extract = (code: string) => {
   const ast = parse(code, {
@@ -11,15 +12,14 @@ const extract = (code: string) => {
   return ast.comments
 }
 
-const questionsPath = path.resolve('questions')
-const folder = fs.readdirSync(questionsPath)
+const folder = fs.readdirSync(QUESTIONS_PATH)
 const comments: string[] = []
 
 for (let i = 0; i < folder.length; i++) {
   if (!/^\d+-/.test(folder[i])) {
     continue
   }
-  const buffer = fs.readFileSync(path.join(questionsPath, folder[i], 'template.ts'))
+  const buffer = fs.readFileSync(path.join(QUESTIONS_PATH, folder[i], 'template.ts'))
   extract(buffer.toString('utf8'))?.map((v) => {
     comments.push(he.encode(v.value))
   })
@@ -41,12 +41,9 @@ const SITE_TEMPLATE = `
 </html>
 `
 
-const siteDir = path.resolve('dist')
-
-fs.ensureDirSync(siteDir)
-
+fs.ensureDirSync(BUILD_PATH)
 fs.writeFileSync(
-  path.join(siteDir, 'index.html'),
+  path.join(BUILD_PATH, 'index.html'),
   SITE_TEMPLATE.replace(
     /{{\w+}}/,
     comments
