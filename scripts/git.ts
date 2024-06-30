@@ -27,7 +27,7 @@ const commitCheck = () => {
   return Promise.resolve()
 }
 
-const flow = new Flow([
+const gitFlow = new Flow([
   {
     name: 'commit check',
     command: commitCheck,
@@ -50,12 +50,12 @@ const flow = new Flow([
   },
   {
     name: 'git push',
-    command: (branch) => git.push('origin', branch),
+    command: (branch: string) => git.push('origin', branch),
     okMsg: 'Push Finish',
-  } satisfies Task<string>,
+  },
 ])
 
-flow
+gitFlow
   .run()
   .then(() => {
     console.log('Git Flow Finish')
