@@ -2,17 +2,13 @@ import { parse } from '@babel/parser'
 import fs from 'fs-extra'
 import path from 'node:path'
 import he from 'he'
+import chalk from 'chalk'
 import { BUILD_PATH, QUESTIONS_PATH, SCRIPTS_PATH } from './path'
 import { Flow } from './flow'
-
-const getFiles = () => {
-  return fs.readdir(QUESTIONS_PATH)
-}
 
 const getComments = (files: string[]) => {
   const questions = files.filter((question) => /^\d+-/.test(question))
   const comments: string[] = []
-
   return new Flow(
     questions.map((question) => {
       return {
@@ -63,7 +59,7 @@ const generateSite = async (comments: string[]) => {
 const siteFlow = new Flow([
   {
     name: 'get files',
-    command: getFiles,
+    command: () => fs.readdir(QUESTIONS_PATH),
     okMsg: 'Get Questions Finish',
   },
   {
@@ -78,11 +74,6 @@ const siteFlow = new Flow([
   },
 ])
 
-siteFlow
-  .run()
-  .then(() => {
-    console.log('Site Flow Finish')
-  })
-  .catch((err) => {
-    console.error(err)
-  })
+siteFlow.run().then(() => {
+  console.log(chalk.green('Site Flow Finish'))
+})

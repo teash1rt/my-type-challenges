@@ -1,4 +1,5 @@
 import simpleGit from 'simple-git'
+import chalk from 'chalk'
 import { Flow } from './flow'
 
 const git = simpleGit()
@@ -55,11 +56,6 @@ const gitFlow = new Flow([
   },
 ])
 
-gitFlow
-  .run()
-  .then(() => {
-    console.log('Git Flow Finish')
-  })
-  .catch((err) => {
-    console.error(err)
-  })
+gitFlow.run().then(() => {
+  console.log(chalk.green('Git Flow Finish'))
+})

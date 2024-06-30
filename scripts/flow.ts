@@ -1,3 +1,5 @@
+import chalk from 'chalk'
+
 export type Task<T = any, U = any> = {
   name: string
   command: (arg: T) => Promise<U>
@@ -29,7 +31,8 @@ export class Flow {
         return this.run(res)
       })
       .catch((err) => {
-        console.error(`flow error: at ${this.tasks[this.currentIdx].name}`)
+        console.log(chalk.yellow(`flow error: at ${this.tasks[this.currentIdx].name}`))
+        console.log(chalk.red(`details: ${err}`))
         return Promise.reject(err)
       })
   }
