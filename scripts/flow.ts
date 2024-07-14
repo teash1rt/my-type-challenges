@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import { once } from './decorator'
 
 export type Task<T = any, U = any> = {
   name: string
@@ -18,7 +19,13 @@ export class Flow {
     this.currentIdx = 0
   }
 
-  async run(arg?: unknown): Promise<unknown> {
+  @once
+  private errorLog(err: unknown) {
+    console.log(chalk.yellow(`flow error: at ${this.tasks[this.currentIdx].name}`))
+    console.log(chalk.red(`details: ${err}`))
+  }
+
+  public async run(arg?: unknown): Promise<unknown> {
     if (this.currentIdx === this.tasks.length) {
       return Promise.resolve(arg)
     }
@@ -31,8 +38,7 @@ export class Flow {
         return this.run(res)
       })
       .catch((err) => {
-        console.log(chalk.yellow(`flow error: at ${this.tasks[this.currentIdx].name}`))
-        console.log(chalk.red(`details: ${err}`))
+        this.errorLog(err)
         return Promise.reject(err)
       })
   }
