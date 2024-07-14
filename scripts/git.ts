@@ -1,47 +1,50 @@
-import simpleGit from 'simple-git'
+import simpleGit, { type StatusResult } from 'simple-git'
 import chalk from 'chalk'
 import { Flow } from './flow'
 
 const git = simpleGit()
 
-const commitMsg: string | undefined = process.argv.slice(2).join(' ')
-
-if (!commitMsg) {
-  throw new Error('missing commit message')
+enum CommitType {
+  FINISH = '-f',
+  SITE = '-s',
 }
 
-const COMMIT_PREFIX = ['feat', 'fix', 'refactor', 'chore', 'docs'] as const
-
-const commitCheck = () => {
-  if (
-    !COMMIT_PREFIX.some((item) => {
-      return commitMsg.startsWith(item + ':')
-    })
-  ) {
-    return Promise.reject('wrong commit prefix')
+const getMessage = (status: StatusResult) => {
+  switch (process.argv[2]) {
+    case CommitType.FINISH:
+      const questions = status.files
+        .map((file) => file.path)
+        .filter((path) => /^questions\/\d+-.*\/template.ts/.test(path))
+        .map((path) => path.split('/')[1].split('-')[0])
+        .sort((a, b) => Number(a) - Number(b))
+        .join(', ')
+      return Promise.resolve(`feat: finish ${questions}`)
+    case CommitType.SITE:
+      return Promise.resolve('site: update site')
+    default:
+      return Promise.reject('wrong commit arg')
   }
-
-  if (process.argv[3] === undefined) {
-    return Promise.reject('missing commit body')
-  }
-
-  return Promise.resolve()
 }
 
 const gitFlow = new Flow([
-  {
-    name: 'commit check',
-    command: commitCheck,
-    okMsg: 'Check Finish',
-  },
   {
     name: 'git add',
     command: () => git.add('./*'),
     okMsg: 'Add Finish',
   },
   {
+    name: 'git status',
+    command: () => git.status(),
+    okMsg: 'Get Status Finish',
+  },
+  {
+    name: 'get message',
+    command: (status) => getMessage(status),
+    okMsg: 'Get Message Finish',
+  },
+  {
     name: 'git commit',
-    command: () => git.commit(commitMsg),
+    command: (msg) => git.commit(msg),
     okMsg: 'Commit Finish',
   },
   {
