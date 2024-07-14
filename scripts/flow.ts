@@ -21,7 +21,7 @@ export class Flow {
 
   @once
   private errorLog(err: unknown) {
-    console.log(chalk.yellow(`flow error: at ${this.tasks[this.currentIdx].name}`))
+    console.log(chalk.yellow(`error at: <${this.tasks[this.currentIdx].name}>`))
     console.log(chalk.red(`details: ${err}`))
   }
 
